@@ -42,10 +42,10 @@ import { Item, ItemComment } from '../../../../core/models/inventory.models';
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>Detalles</mat-card-title>
-        <mat-card-content>
-          <form [formGroup]="form">
+      <form [formGroup]="form" class="detail-form">
+        <mat-card>
+          <mat-card-title>Detalles</mat-card-title>
+          <mat-card-content>
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
               <input matInput formControlName="name" />
@@ -58,29 +58,34 @@ import { Item, ItemComment } from '../../../../core/models/inventory.models';
               <mat-label>Cantidad</mat-label>
               <input matInput type="number" formControlName="quantity" />
             </mat-form-field>
-          </form>
-          <button mat-flat-button color="primary" (click)="save()">Guardar cambios</button>
-        </mat-card-content>
-      </mat-card>
+          </mat-card-content>
+        </mat-card>
 
-      <mat-card>
-        <mat-card-title>Atributos</mat-card-title>
-        <mat-card-content>
-          <div formArrayName="attributes" class="attributes">
-            <div *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
-              <mat-form-field appearance="outline">
-                <mat-label>Clave</mat-label>
-                <input matInput formControlName="key" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Valor</mat-label>
-                <input matInput formControlName="value" />
-              </mat-form-field>
+        <mat-card>
+          <mat-card-title>Atributos</mat-card-title>
+          <mat-card-content>
+            <div formArrayName="attributes" class="attributes">
+              <div *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
+                <mat-form-field appearance="outline">
+                  <mat-label>Clave</mat-label>
+                  <input matInput formControlName="key" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Valor</mat-label>
+                  <input matInput formControlName="value" />
+                </mat-form-field>
+              </div>
             </div>
-          </div>
-          <button mat-stroked-button (click)="addAttribute()">Añadir atributo</button>
-        </mat-card-content>
-      </mat-card>
+            <button mat-stroked-button type="button" (click)="addAttribute()">
+              Añadir atributo
+            </button>
+          </mat-card-content>
+        </mat-card>
+
+        <button mat-flat-button color="primary" type="button" (click)="save()">
+          Guardar cambios
+        </button>
+      </form>
 
       <mat-card>
         <mat-card-title>Comentarios</mat-card-title>
@@ -128,7 +133,7 @@ import { Item, ItemComment } from '../../../../core/models/inventory.models';
         border-radius: 12px;
       }
 
-      form {
+      .detail-form {
         display: grid;
         gap: 1rem;
       }

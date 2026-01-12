@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../../../core/services/inventory.service';
 import { InventoriesStore } from '../../../../core/stores/inventories.store';
+import { NotificationService } from '../../../../core/services/notification.service';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { LoadingStateComponent } from '../../../../shared/components/loading-state/loading-state.component';
 import { InventoryCardComponent } from '../../components/inventory-card/inventory-card.component';
@@ -83,6 +84,7 @@ export class InventoryListComponent {
   private readonly inventoryService = inject(InventoryService);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
 
   readonly store = inject(InventoriesStore);
 
@@ -119,9 +121,14 @@ export class InventoryListComponent {
   }
 
   removeInventory(inventoryId: string): void {
+    const previous = this.store.inventories();
+    this.store.setInventories(this.store.inventories().filter((inv) => inv.id !== inventoryId));
     this.inventoryService.delete(inventoryId).subscribe({
-      next: () =>
-        this.store.setInventories(this.store.inventories().filter((inv) => inv.id !== inventoryId))
+      next: () => undefined,
+      error: () => {
+        this.store.setInventories(previous);
+        this.notificationService.show('No se pudo eliminar el inventario.');
+      }
     });
   }
 }

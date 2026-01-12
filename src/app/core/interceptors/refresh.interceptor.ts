@@ -1,6 +1,6 @@
 import { HttpInterceptorFn, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, finalize, shareReplay, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { SessionStore } from '../stores/session.store';
 
@@ -8,6 +8,10 @@ const isUnauthorized = (error: unknown): error is HttpErrorResponse =>
   error instanceof HttpErrorResponse && error.status === 401;
 
 const isRefreshRequest = (req: HttpRequest<unknown>): boolean => req.url.includes('/auth/refresh');
+
+let refreshToken$:
+  | ReturnType<AuthService['refresh']>
+  | null = null;
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -19,7 +23,16 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => error);
       }
 
-      return authService.refresh().pipe(
+      if (!refreshToken$) {
+        refreshToken$ = authService.refresh().pipe(
+          shareReplay(1),
+          finalize(() => {
+            refreshToken$ = null;
+          })
+        );
+      }
+
+      return refreshToken$.pipe(
         switchMap((tokens) => {
           const current = sessionStore.session();
           if (current) {
