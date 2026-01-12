@@ -93,6 +93,7 @@ export class InventoryDashboardComponent {
     this.store.setLoading(true);
     this.inventoryService.getById(inventoryId).subscribe({
       next: (inventory) => this.store.setInventory(inventory),
+      error: () => this.store.setLoading(false),
       complete: () => this.store.setLoading(false)
     });
 
