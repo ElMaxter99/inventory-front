@@ -20,6 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideRouter(routes),
     importProvidersFrom(MatSnackBarModule),
-    provideHttpClient(withInterceptors([authInterceptor, refreshInterceptor, errorInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, refreshInterceptor]))
   ]
 };
