@@ -23,43 +23,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
-  template: `
-    <mat-sidenav-container class="shell">
-      <mat-sidenav
-        #sidenav
-        [mode]="isHandset() ? 'over' : 'side'"
-        [opened]="!isHandset()"
-        class="shell-sidenav"
-      >
-        <div class="logo">
-          <mat-icon>inventory_2</mat-icon>
-          <span>{{ appName }}</span>
-        </div>
-        <mat-nav-list>
-          <a mat-list-item routerLink="/app/inventories" routerLinkActive="active">Inventarios</a>
-        </mat-nav-list>
-      </mat-sidenav>
-      <mat-sidenav-content>
-        <mat-toolbar color="primary">
-          <button mat-icon-button (click)="sidenav.toggle()" aria-label="Abrir menú">
-            <mat-icon>menu</mat-icon>
-          </button>
-          <span class="spacer"></span>
-          <mat-slide-toggle (change)="toggleTheme()" [checked]="theme() === 'dark'">
-            Modo oscuro
-          </mat-slide-toggle>
-          <button mat-icon-button (click)="logout()" aria-label="Cerrar sesión">
-            <mat-icon>logout</mat-icon>
-          </button>
-        </mat-toolbar>
-        <main class="shell-content">
-          <router-outlet></router-outlet>
-        </main>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  `,
+  template: ` <router-outlet></router-outlet> `,
   styles: [
     `
       .shell {
@@ -93,8 +59,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
           padding: 1rem;
         }
       }
-    `
-  ]
+    `,
+  ],
 })
 export class AppShellComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -120,7 +86,7 @@ export class AppShellComponent {
 
   logout(): void {
     this.authService.logout().subscribe({
-      complete: () => this.sessionStore.clear()
+      complete: () => this.sessionStore.clear(),
     });
   }
 }
