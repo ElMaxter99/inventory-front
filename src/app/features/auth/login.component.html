@@ -1,0 +1,89 @@
+<div class="auth-screen">
+  <header class="top-bar">
+    <button class="icon-button" type="button">
+      <span class="material-symbols-outlined">arrow_back_ios</span>
+    </button>
+    <h2>Login</h2>
+  </header>
+
+  <main class="auth-card">
+    <div class="logo">
+      <span class="material-symbols-outlined">inventory_2</span>
+    </div>
+    <h1>Login to Your Home</h1>
+    <p class="subtitle">Manage your household inventory with ease.</p>
+
+    <div *ngIf="authError" class="error-banner">
+      <span class="material-symbols-outlined">error</span>
+      <span>{{ authError }}</span>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+      <label class="field">
+        <span>Email address</span>
+        <input
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="Enter your email"
+        />
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+          <button class="icon-button" type="button" (click)="togglePassword()">
+            <span class="material-symbols-outlined">visibility</span>
+          </button>
+        </div>
+      </label>
+
+      <div class="actions-row">
+        <a routerLink="/auth/reset-password">Forgot Password?</a>
+      </div>
+
+      <button class="primary-button" type="submit" [disabled]="loading">
+        Log In
+      </button>
+    </form>
+
+    <div class="divider">
+      <span></span>
+      <p>Or continue with</p>
+      <span></span>
+    </div>
+
+    <div class="social-grid">
+      <button type="button">
+        <img
+          alt="Google"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB2ktRob8A_aqxqIj5tDrBNINoIsnADdsCXPfikeeU07sSqphQRCuJuOQIxDRk-P3f8catOYoow88fU49u_TaR4WXvgcRWUU6wJ6wiBWpIkdVAAULJ9mPsO9-Z0eE4V6FXiMXP1boJfFUaWstBkhjpN0slW9Brc_SVHLt5eNLJIEgXLoN6XuvkEY1E90z_D4JkVGmcQwVE_as4a-QfdhiDho6jtxesiKcv5_NXmCCbSPvejhIuPQA0us3VfadDdXRLl_D5tUdZVgQ"
+        />
+        Google
+      </button>
+      <button type="button">
+        <span class="material-symbols-outlined">ios</span>
+        Apple
+      </button>
+    </div>
+
+    <div class="footer-link">
+      <p>
+        Don't have an account?
+        <a routerLink="/auth/register">Register</a>
+      </p>
+    </div>
+  </main>
+
+  <div class="scan-hint">
+    <span class="material-symbols-outlined">qr_code_scanner</span>
+    <span class="material-symbols-outlined">nfc</span>
+    <span class="material-symbols-outlined">psychology</span>
+  </div>
+</div>

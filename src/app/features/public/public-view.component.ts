@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { LocatorService } from '../../core/services/locator.service';
 import { LocatorResolution } from '../../core/models/inventory.models';
 import { environment } from '../../../environments/environment';
+import { PublicService } from '../../core/services/public.service';
 
 @Component({
   selector: 'app-public-view',
@@ -61,7 +61,7 @@ import { environment } from '../../../environments/environment';
   ]
 })
 export class PublicViewComponent {
-  private readonly locatorService = inject(LocatorService);
+  private readonly publicService = inject(PublicService);
   private readonly route = inject(ActivatedRoute);
 
   readonly resolution = signal<LocatorResolution | null>(null);
@@ -70,7 +70,7 @@ export class PublicViewComponent {
 
   constructor() {
     const token = this.route.snapshot.paramMap.get('token') ?? '';
-    this.locatorService.resolve(token).subscribe({
+    this.publicService.getPublicLocator(token).subscribe({
       next: (data) => this.resolution.set(data),
       error: () => this.error.set('El token no es válido o expiró.')
     });

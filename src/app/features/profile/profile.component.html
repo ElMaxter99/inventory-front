@@ -1,0 +1,26 @@
+<div class="profile-shell">
+  <header class="top-bar">
+    <a class="icon-button" routerLink="/app/inventories">
+      <span class="material-symbols-outlined">arrow_back_ios_new</span>
+    </a>
+    <h2>Profile</h2>
+  </header>
+
+  <main class="profile-body">
+    <div class="avatar">JD</div>
+    <h1>{{ sessionStore.user()?.name || 'Usuario' }}</h1>
+    <p>{{ sessionStore.user()?.email || 'sin correo' }}</p>
+
+    <div class="info-card">
+      <h3>Account</h3>
+      <div class="info-row">
+        <span>Role</span>
+        <span>{{ sessionStore.user() ? 'Member' : 'Guest' }}</span>
+      </div>
+      <div class="info-row">
+        <span>Status</span>
+        <span>{{ sessionStore.isAuthenticated() ? 'Active' : 'Inactive' }}</span>
+      </div>
+    </div>
+  </main>
+</div>
