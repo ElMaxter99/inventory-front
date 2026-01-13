@@ -6,11 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-tag-chips',
   standalone: true,
   imports: [CommonModule, MatChipsModule],
-  template: `
-    <mat-chip-set>
-      <mat-chip *ngFor="let tag of tags" color="primary" selected>{{ tag }}</mat-chip>
-    </mat-chip-set>
-  `
+  templateUrl: './tag-chips.component.html'
 })
 export class TagChipsComponent {
   @Input() tags: string[] = [];

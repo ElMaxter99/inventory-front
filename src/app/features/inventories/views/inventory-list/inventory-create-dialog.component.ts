@@ -15,27 +15,7 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule
   ],
-  template: `
-    <h2 mat-dialog-title>Nuevo inventario</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form">
-        <mat-form-field appearance="outline">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Descripción</mat-label>
-          <textarea matInput rows="3" formControlName="description"></textarea>
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancelar</button>
-      <button mat-flat-button color="primary" [mat-dialog-close]="form.value" [disabled]="form.invalid">
-        Crear
-      </button>
-    </mat-dialog-actions>
-  `
+  templateUrl: './inventory-create-dialog.component.html'
 })
 export class InventoryCreateDialogComponent {
   readonly form = new FormBuilder().nonNullable.group({

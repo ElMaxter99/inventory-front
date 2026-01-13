@@ -1,0 +1,31 @@
+.shell {
+  min-height: 100vh;
+  background: var(--app-background);
+}
+
+.shell-sidenav {
+  width: 260px;
+  background: var(--app-surface);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  font-weight: 600;
+}
+
+.shell-content {
+  padding: 1.5rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .shell-content {
+    padding: 1rem;
+  }
+}

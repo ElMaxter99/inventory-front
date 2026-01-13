@@ -1,0 +1,13 @@
+.invite {
+  display: grid;
+  grid-template-columns: 1fr 180px auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .invite {
+    grid-template-columns: 1fr;
+  }
+}

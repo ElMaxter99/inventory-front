@@ -28,82 +28,8 @@ import { ZoneItemsStore } from '../../../../core/stores/zone-items.store';
     BreadcrumbComponent,
     ItemCardComponent
   ],
-  template: `
-    <app-breadcrumb [items]="breadcrumbs()"></app-breadcrumb>
-
-    <section class="header">
-      <div>
-        <h2>Zona: {{ zoneId }}</h2>
-        <p>Filtra por nombre, tags o tipo de item.</p>
-      </div>
-      <div class="actions">
-        <button mat-flat-button color="primary" (click)="createItem(false)">
-          <mat-icon>add</mat-icon>
-          Añadir item
-        </button>
-        <button mat-stroked-button color="primary" (click)="createItem(true)">
-          <mat-icon>add_box</mat-icon>
-          Añadir caja
-        </button>
-      </div>
-    </section>
-
-    <form class="filters" [formGroup]="filters">
-      <mat-form-field appearance="outline">
-        <mat-label>Buscar</mat-label>
-        <input matInput formControlName="search" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo</mat-label>
-        <mat-select formControlName="type">
-          <mat-option value="">Todos</mat-option>
-          <mat-option value="object">Objeto</mat-option>
-          <mat-option value="container">Contenedor</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Tag</mat-label>
-        <input matInput formControlName="tag" />
-      </mat-form-field>
-    </form>
-
-    <div class="items">
-      <app-item-card
-        *ngFor="let item of store.items()"
-        [item]="item"
-        (open)="openItem(item.id)"
-        (remove)="removeItem(item.id)"
-      ></app-item-card>
-    </div>
-  `,
-  styles: [
-    `
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        margin: 1.5rem 0;
-      }
-
-      .actions {
-        display: flex;
-        gap: 0.75rem;
-      }
-
-      .filters {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .items {
-        display: grid;
-        gap: 1rem;
-      }
-    `
-  ]
+  templateUrl: './zone-detail.component.html',
+  styleUrls: ['./zone-detail.component.scss']
 })
 export class ZoneDetailComponent {
   private readonly route = inject(ActivatedRoute);

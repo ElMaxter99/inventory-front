@@ -1,0 +1,10 @@
+.uploader {
+  border: 2px dashed var(--app-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  display: grid;
+  gap: 0.75rem;
+  color: var(--app-muted-text);
+  background: var(--app-surface);
+}

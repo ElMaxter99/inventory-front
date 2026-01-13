@@ -6,34 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-image-uploader',
   standalone: true,
   imports: [MatButtonModule, MatIconModule],
-  template: `
-    <div class="uploader" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-      <mat-icon aria-hidden="true">cloud_upload</mat-icon>
-      <p>{{ label }}</p>
-      <button mat-stroked-button type="button" (click)="fileInput.click()">Seleccionar</button>
-      <input
-        type="file"
-        accept="image/*"
-        hidden
-        #fileInput
-        (change)="onFileSelected($event)"
-      />
-    </div>
-  `,
-  styles: [
-    `
-      .uploader {
-        border: 2px dashed var(--app-border);
-        border-radius: 16px;
-        padding: 1.5rem;
-        text-align: center;
-        display: grid;
-        gap: 0.75rem;
-        color: var(--app-muted-text);
-        background: var(--app-surface);
-      }
-    `
-  ]
+  templateUrl: './image-uploader.component.html',
+  styleUrls: ['./image-uploader.component.scss']
 })
 export class ImageUploaderComponent {
   @Input() label = 'Arrastra una foto o selecciónala desde tu equipo';

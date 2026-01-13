@@ -1,0 +1,6 @@
+<div class="uploader" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+  <mat-icon aria-hidden="true">cloud_upload</mat-icon>
+  <p>{{ label }}</p>
+  <button mat-stroked-button type="button" (click)="fileInput.click()">Seleccionar</button>
+  <input type="file" accept="image/*" hidden #fileInput (change)="onFileSelected($event)" />
+</div>

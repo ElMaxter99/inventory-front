@@ -8,20 +8,7 @@ import { Zone } from '../../../../core/models/inventory.models';
   selector: 'app-zone-list',
   standalone: true,
   imports: [CommonModule, MatListModule, MatIconModule],
-  template: `
-    <mat-nav-list>
-      <a
-        mat-list-item
-        *ngFor="let zone of zones"
-        (click)="select.emit(zone)"
-        tabindex="0"
-      >
-        <mat-icon matListItemIcon>room</mat-icon>
-        <div matListItemTitle>{{ zone.name }}</div>
-        <div matListItemLine>{{ zone.description }}</div>
-      </a>
-    </mat-nav-list>
-  `
+  templateUrl: './zone-list.component.html'
 })
 export class ZoneListComponent {
   @Input() zones: Zone[] = [];

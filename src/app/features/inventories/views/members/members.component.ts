@@ -24,51 +24,8 @@ import { MemberTableComponent } from '../../components/member-table/member-table
     MatSelectModule,
     MemberTableComponent
   ],
-  template: `
-    <mat-card>
-      <mat-card-title>Miembros</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="inviteForm" class="invite">
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Rol</mat-label>
-            <mat-select formControlName="role">
-              <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-flat-button color="primary" (click)="invite()" [disabled]="inviteForm.invalid">
-            Invitar
-          </button>
-        </form>
-        <app-member-table
-          [members]="members"
-          [roles]="roles"
-          (roleChange)="updateRole($event.member, $event.role)"
-          (remove)="removeMember($event)"
-        ></app-member-table>
-      </mat-card-content>
-    </mat-card>
-  `,
-  styles: [
-    `
-      .invite {
-        display: grid;
-        grid-template-columns: 1fr 180px auto;
-        gap: 1rem;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      @media (max-width: 768px) {
-        .invite {
-          grid-template-columns: 1fr;
-        }
-      }
-    `
-  ]
+  templateUrl: './members.component.html',
+  styleUrls: ['./members.component.scss']
 })
 export class MembersComponent {
   private readonly inventoryService = inject(InventoryService);

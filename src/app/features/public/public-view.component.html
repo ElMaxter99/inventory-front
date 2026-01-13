@@ -1,0 +1,27 @@
+<div class="public-wrapper">
+  <mat-card *ngIf="resolution() as data">
+    <mat-card-title>Vista pública</mat-card-title>
+    <mat-card-subtitle>
+      {{ data.targetType | titlecase }} · {{ data.targetId }}
+    </mat-card-subtitle>
+    <mat-card-content>
+      <p *ngIf="data.publicEditEnabled && showWarning()" class="warning">
+        Edición pública habilitada. Los cambios quedan auditados.
+      </p>
+      <p>Inventario: {{ data.inventoryId }}</p>
+      <p>Zona: {{ data.zoneId || 'N/A' }}</p>
+      <p>Item: {{ data.itemId || 'N/A' }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="primary" [disabled]="!data.publicEditEnabled">
+        Editar contenido
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="error()">
+    <mat-card-title>Token inválido o sin permiso</mat-card-title>
+    <mat-card-content>
+      <p>{{ error() }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
