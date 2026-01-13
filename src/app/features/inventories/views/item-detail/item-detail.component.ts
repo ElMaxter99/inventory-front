@@ -168,7 +168,7 @@ export class ItemDetailComponent {
 
   newComment = '';
 
-  readonly form = this.fb.group({
+  readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required]],
     description: [''],
     quantity: [1, [Validators.required, Validators.min(1)]],
@@ -196,7 +196,7 @@ export class ItemDetailComponent {
         });
         this.attributes.clear();
         item.attributes.forEach((attr) => {
-          this.attributes.push(this.fb.group({ key: [attr.key], value: [attr.value] }));
+          this.attributes.push(this.fb.nonNullable.group({ key: [attr.key], value: [attr.value] }));
         });
       });
 
@@ -207,16 +207,17 @@ export class ItemDetailComponent {
   }
 
   addAttribute(): void {
-    this.attributes.push(this.fb.group({ key: [''], value: [''] }));
+    this.attributes.push(this.fb.nonNullable.group({ key: [''], value: [''] }));
   }
 
   save(): void {
     if (this.form.invalid) {
       return;
     }
-    this.itemService
-      .update(this.inventoryId, this.itemId, this.form.getRawValue())
-      .subscribe((item) => this.item.set(item));
+    const payload = this.form.getRawValue();
+    this.itemService.update(this.inventoryId, this.itemId, payload).subscribe((item) => {
+      this.item.set(item);
+    });
   }
 
   uploadPhoto(file: File): void {

@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { LocatorService } from '../../../../core/services/locator.service';
-import { Locator } from '../../../../core/models/inventory.models';
+import { Locator, LocatorTargetType } from '../../../../core/models/inventory.models';
 import { LocatorListComponent } from '../../components/locator-list/locator-list.component';
 
 @Component({
@@ -74,7 +74,7 @@ export class LocatorsComponent {
   locators: Locator[] = [];
 
   readonly locatorForm = new FormBuilder().nonNullable.group({
-    targetType: ['inventory', [Validators.required]],
+    targetType: ['inventory' as LocatorTargetType, [Validators.required]],
     targetId: ['', [Validators.required]],
     isPublic: [true],
     publicEditEnabled: [false]
@@ -93,7 +93,8 @@ export class LocatorsComponent {
 
   createLocator(): void {
     const inventoryId = this.route.snapshot.paramMap.get('inventoryId') ?? '';
-    this.locatorService.create(inventoryId, this.locatorForm.getRawValue()).subscribe({
+    const payload = this.locatorForm.getRawValue();
+    this.locatorService.create(inventoryId, payload).subscribe({
       next: (locator) => (this.locators = [locator, ...this.locators])
     });
   }

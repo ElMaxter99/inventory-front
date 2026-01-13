@@ -13,7 +13,11 @@ import { TagChipsComponent } from '../../../../shared/components/tag-chips/tag-c
   template: `
     <mat-card class="item-card">
       <div class="thumbnail">
-        <img *ngIf="item?.photos?.length" [src]="item?.photos[0]" [alt]="item?.name" />
+        <img
+          *ngIf="item?.photos?.length"
+          [src]="item?.photos?.[0]"
+          [alt]="item?.name"
+        />
         <mat-icon *ngIf="!item?.photos?.length">inventory_2</mat-icon>
       </div>
       <div class="details">
