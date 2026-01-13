@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -172,15 +180,19 @@ export class ItemDetailComponent {
     name: ['', [Validators.required]],
     description: [''],
     quantity: [1, [Validators.required, Validators.min(1)]],
-    attributes: this.fb.array<FormGroup<ItemAttribute>>([])
+    attributes: this.fb.array<FormGroup<{ key: FormControl<string>; value: FormControl<string> }>>(
+      []
+    )
   });
 
   constructor() {
     this.loadItem();
   }
 
-  get attributes(): FormArray<FormGroup<ItemAttribute>> {
-    return this.form.get('attributes') as FormArray<FormGroup<ItemAttribute>>;
+  get attributes(): FormArray<FormGroup<{ key: FormControl<string>; value: FormControl<string> }>> {
+    return this.form.get('attributes') as FormArray<
+      FormGroup<{ key: FormControl<string>; value: FormControl<string> }>
+    >;
   }
 
   loadItem(): void {
@@ -196,7 +208,9 @@ export class ItemDetailComponent {
         });
         this.attributes.clear();
         item.attributes.forEach((attr) => {
-        this.attributes.push(this.fb.nonNullable.group({ key: [attr.key], value: [attr.value] }));
+          this.attributes.push(
+            this.fb.nonNullable.group({ key: [attr.key], value: [attr.value] })
+          );
         });
       });
 
@@ -215,12 +229,15 @@ export class ItemDetailComponent {
       return;
     }
     const payload = this.form.getRawValue();
-    this.itemService.update(this.inventoryId, this.itemId, {
-      ...payload,
-      attributes: payload.attributes as ItemAttribute[]
-    }).subscribe((item) => {
-      this.item.set(item);
-    });
+    const attributes: ItemAttribute[] = payload.attributes.map((attr) => ({
+      key: attr.key,
+      value: attr.value
+    }));
+    this.itemService
+      .update(this.inventoryId, this.itemId, { ...payload, attributes })
+      .subscribe((item) => {
+        this.item.set(item);
+      });
   }
 
   uploadPhoto(file: File): void {
