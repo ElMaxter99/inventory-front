@@ -23,15 +23,26 @@ export class LocatorService {
       .pipe(map((response) => response.data));
   }
 
-  delete(locatorId: string): Observable<void> {
+  update(inventoryId: string, locatorId: string, payload: Partial<Locator>): Observable<Locator> {
     return this.http
-      .delete<ApiResponse<void>>(`${this.baseUrl}/${locatorId}`)
+      .patch<ApiResponse<Locator>>(
+        `${environment.apiBaseUrl}/inventories/${inventoryId}/locators/${locatorId}`,
+        payload
+      )
+      .pipe(map((response) => response.data));
+  }
+
+  delete(inventoryId: string, locatorId: string): Observable<void> {
+    return this.http
+      .delete<ApiResponse<void>>(
+        `${environment.apiBaseUrl}/inventories/${inventoryId}/locators/${locatorId}`
+      )
       .pipe(map(() => undefined));
   }
 
   resolve(token: string): Observable<LocatorResolution> {
     return this.http
-      .get<ApiResponse<LocatorResolution>>(`${this.baseUrl}/resolve/${token}`)
+      .get<ApiResponse<LocatorResolution>>(`${this.baseUrl}/${token}`)
       .pipe(map((response) => response.data));
   }
 }

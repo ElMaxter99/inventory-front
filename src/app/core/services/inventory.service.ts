@@ -64,4 +64,25 @@ export class InventoryService {
       .delete<ApiResponse<void>>(`${this.baseUrl}/${inventoryId}/members/${memberId}`)
       .pipe(map(() => undefined));
   }
+
+  enablePublic(inventoryId: string): Observable<Inventory> {
+    return this.http
+      .post<ApiResponse<Inventory>>(`${this.baseUrl}/${inventoryId}/public/enable`, {})
+      .pipe(map((response) => response.data));
+  }
+
+  disablePublic(inventoryId: string): Observable<Inventory> {
+    return this.http
+      .post<ApiResponse<Inventory>>(`${this.baseUrl}/${inventoryId}/public/disable`, {})
+      .pipe(map((response) => response.data));
+  }
+
+  updatePublicSettings(
+    inventoryId: string,
+    payload: { isPublic?: boolean; publicEditEnabled?: boolean }
+  ): Observable<Inventory> {
+    return this.http
+      .patch<ApiResponse<Inventory>>(`${this.baseUrl}/${inventoryId}/public`, payload)
+      .pipe(map((response) => response.data));
+  }
 }

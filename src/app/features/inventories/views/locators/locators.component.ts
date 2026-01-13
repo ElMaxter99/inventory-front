@@ -100,7 +100,8 @@ export class LocatorsComponent {
   }
 
   deleteLocator(locator: Locator): void {
-    this.locatorService.delete(locator.id).subscribe({
+    const inventoryId = this.route.snapshot.paramMap.get('inventoryId') ?? '';
+    this.locatorService.delete(inventoryId, locator.id).subscribe({
       next: () => (this.locators = this.locators.filter((entry) => entry.id !== locator.id))
     });
   }

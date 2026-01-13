@@ -17,6 +17,12 @@ export class ZoneService {
       .pipe(map((response) => response.data));
   }
 
+  getById(inventoryId: string, zoneId: string): Observable<Zone> {
+    return this.http
+      .get<ApiResponse<Zone>>(`${this.baseUrl}/${inventoryId}/zones/${zoneId}`)
+      .pipe(map((response) => response.data));
+  }
+
   create(inventoryId: string, payload: Partial<Zone>): Observable<Zone> {
     return this.http
       .post<ApiResponse<Zone>>(`${this.baseUrl}/${inventoryId}/zones`, payload)
@@ -37,7 +43,7 @@ export class ZoneService {
 
   reorder(inventoryId: string, zoneIds: string[]): Observable<void> {
     return this.http
-      .post<ApiResponse<void>>(`${this.baseUrl}/${inventoryId}/zones/reorder`, { zoneIds })
+      .patch<ApiResponse<void>>(`${this.baseUrl}/${inventoryId}/zones/reorder`, { zoneIds })
       .pipe(map(() => undefined));
   }
 }

@@ -11,6 +11,12 @@ export class ItemService {
 
   constructor(private readonly http: HttpClient) {}
 
+  listInventory(inventoryId: string): Observable<Item[]> {
+    return this.http
+      .get<ApiResponse<Item[]>>(`${this.baseUrl}/${inventoryId}/items`)
+      .pipe(map((response) => response.data));
+  }
+
   list(inventoryId: string, zoneId: string, params?: Record<string, string>): Observable<Item[]> {
     return this.http
       .get<ApiResponse<Item[]>>(`${this.baseUrl}/${inventoryId}/zones/${zoneId}/items`, { params })
@@ -20,6 +26,12 @@ export class ItemService {
   getById(inventoryId: string, itemId: string): Observable<Item> {
     return this.http
       .get<ApiResponse<Item>>(`${this.baseUrl}/${inventoryId}/items/${itemId}`)
+      .pipe(map((response) => response.data));
+  }
+
+  createInventoryItem(inventoryId: string, payload: Partial<Item>): Observable<Item> {
+    return this.http
+      .post<ApiResponse<Item>>(`${this.baseUrl}/${inventoryId}/items`, payload)
       .pipe(map((response) => response.data));
   }
 
@@ -49,11 +61,9 @@ export class ItemService {
       .pipe(map((response) => response.data));
   }
 
-  deletePhoto(inventoryId: string, itemId: string, photoUrl: string): Observable<Item> {
+  deletePhoto(inventoryId: string, itemId: string, photoId: string): Observable<Item> {
     return this.http
-      .request<ApiResponse<Item>>('delete', `${this.baseUrl}/${inventoryId}/items/${itemId}/photos`, {
-        body: { photoUrl }
-      })
+      .delete<ApiResponse<Item>>(`${this.baseUrl}/${inventoryId}/items/${itemId}/photos/${photoId}`)
       .pipe(map((response) => response.data));
   }
 
@@ -82,7 +92,7 @@ export class ItemService {
   aiSuggest(inventoryId: string, itemId: string): Observable<{ suggestion: string }> {
     return this.http
       .post<ApiResponse<{ suggestion: string }>>(
-        `${this.baseUrl}/${inventoryId}/items/${itemId}/ai-suggest`,
+        `${this.baseUrl}/${inventoryId}/items/${itemId}/ai/suggest`,
         {}
       )
       .pipe(map((response) => response.data));
