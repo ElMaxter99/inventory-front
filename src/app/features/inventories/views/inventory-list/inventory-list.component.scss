@@ -151,6 +151,10 @@
   color: #b8d5cf;
 }
 
+.action-icon .material-symbols-outlined {
+  font-size: 20px;
+}
+
 .role-pill {
   display: inline-flex;
   align-items: center;
@@ -229,8 +233,14 @@
 
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+@media (max-width: 520px) {
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .inventory-card {
@@ -262,20 +272,32 @@
   border-radius: 14px;
   display: grid;
   place-items: center;
+}
+
+.accent-amber {
   background: rgba(255, 193, 7, 0.18);
   color: #ffc107;
 }
 
-.card-icon.alt {
+.accent-blue {
   background: rgba(56, 126, 255, 0.2);
   color: #4d8dff;
 }
 
-.card-action {
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
+.accent-purple {
+  background: rgba(170, 99, 255, 0.2);
+  color: #b17bff;
+}
+
+.accent-rose {
+  background: rgba(255, 107, 129, 0.2);
+  color: #ff6b81;
+}
+
+.card-index {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .card-body h3 {
@@ -292,24 +314,41 @@
 
 .card-footer {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.tag {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 4px 10px;
+.avatar-stack {
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid #0f201c;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  font-weight: 700;
 }
 
-.tag.active {
-  background: rgba(19, 236, 200, 0.2);
-  color: #39f1d0;
+.avatar-stack.highlight {
+  background: #39f1d0;
+  color: #0b1d19;
+}
+
+.add-card {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  min-height: 160px;
+}
+
+.add-card .material-symbols-outlined {
+  font-size: 32px;
 }
 
 .fab {
@@ -349,6 +388,7 @@
   font-size: 10px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 600;
+  text-decoration: none;
 }
 
 .bottom-item.active {

@@ -6,8 +6,8 @@
           <span class="material-symbols-outlined">arrow_back_ios_new</span>
         </button>
         <div>
-          <p class="breadcrumb-label">Home &gt; Inventories</p>
-          <h1 class="breadcrumb-title">Inventories</h1>
+          <p class="breadcrumb-label">Home &gt; Casa</p>
+          <h1 class="breadcrumb-title">Casa</h1>
         </div>
       </div>
       <div class="top-actions">
@@ -20,7 +20,7 @@
       </div>
     </div>
     <nav class="tabs">
-      <button class="tab active" type="button">Inventory</button>
+      <button class="tab active" type="button">Zones</button>
       <button class="tab" type="button">Members</button>
       <button class="tab" type="button">Settings</button>
     </nav>
@@ -29,11 +29,11 @@
   <main class="inventory-body">
     <section class="actions-bar">
       <div class="action-group">
-        <button class="action" type="button" (click)="openCreateDialog()">
+        <button class="action" type="button">
           <span class="action-icon">
-            <span class="material-symbols-outlined">add</span>
+            <span class="material-symbols-outlined">reorder</span>
           </span>
-          <span class="action-label">New</span>
+          <span class="action-label">Reorder</span>
         </button>
         <button class="action" type="button">
           <span class="action-icon">
@@ -44,7 +44,7 @@
       </div>
       <div class="role-pill">
         <span class="role-indicator"></span>
-        <span>Owner Role</span>
+        <span>Editor Role</span>
       </div>
     </section>
 
@@ -52,8 +52,8 @@
       <span class="material-symbols-outlined">search</span>
       <input
         type="text"
-        [placeholder]="'Search ' + store.inventories().length + ' inventories...'"
-        aria-label="Buscar inventarios"
+        [placeholder]="'Search ' + store.inventories().length + ' zones...'"
+        aria-label="Buscar zonas"
       />
       <span class="material-symbols-outlined mic">mic</span>
     </section>
@@ -84,28 +84,26 @@
         (click)="goToInventory(inventory.id)"
       >
         <div class="card-top">
-          <span class="card-icon" [class.alt]="i % 2 === 1">
-            <span class="material-symbols-outlined">inventory_2</span>
+          <span class="card-icon" [ngClass]="inventoryAccent(i)">
+            <span class="material-symbols-outlined">{{ inventoryIcon(i) }}</span>
           </span>
-          <button
-            class="card-action"
-            type="button"
-            (click)="$event.stopPropagation(); removeInventory(inventory.id)"
-          >
-            <span class="material-symbols-outlined">delete</span>
-          </button>
+          <span class="card-index">#{{ i + 1 | number: '2.0' }}</span>
         </div>
         <div class="card-body">
           <h3>{{ inventory.name }}</h3>
-          <p>{{ inventory.description || 'Sin descripción' }}</p>
+          <p>{{ inventory.description || '0 items' }}</p>
         </div>
-        <div class="card-footer">
-          <span class="tag">{{ inventory.role | titlecase }}</span>
-          <span class="tag" [class.active]="inventory.isPublic">
-            {{ inventory.isPublic ? 'Public' : 'Private' }}
-          </span>
+        <div class="card-footer" *ngIf="i === 0">
+          <span class="avatar-stack">AL</span>
+          <span class="avatar-stack">RM</span>
+          <span class="avatar-stack highlight">+1</span>
         </div>
       </div>
+
+      <button class="inventory-card add-card" type="button" (click)="openCreateDialog()">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span>Add Zone</span>
+      </button>
     </section>
   </main>
 
@@ -114,10 +112,10 @@
   </button>
 
   <nav class="bottom-nav">
-    <div class="bottom-item active">
+    <a class="bottom-item active" routerLink="/app/inventories">
       <span class="material-symbols-outlined">home</span>
       <span>Inventory</span>
-    </div>
+    </a>
     <div class="bottom-item">
       <span class="material-symbols-outlined">analytics</span>
       <span>Stats</span>
@@ -126,9 +124,9 @@
       <span class="material-symbols-outlined">notifications</span>
       <span>Activity</span>
     </div>
-    <div class="bottom-item">
+    <a class="bottom-item" routerLink="/app/profile">
       <span class="material-symbols-outlined">person</span>
       <span>Profile</span>
-    </div>
+    </a>
   </nav>
 </div>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { InventoryService } from '../../../../core/services/inventory.service';
 import { InventoriesStore } from '../../../../core/stores/inventories.store';
 import { NotificationService } from '../../../../core/services/notification.service';
@@ -14,6 +14,7 @@ import { InventoryCreateDialogComponent } from './inventory-create-dialog.compon
   imports: [
     CommonModule,
     MatDialogModule,
+    RouterModule,
     LoadingStateComponent
   ],
   templateUrl: './inventory-list.component.html',
@@ -26,6 +27,8 @@ export class InventoryListComponent {
   private readonly notificationService = inject(NotificationService);
 
   readonly store = inject(InventoriesStore);
+  readonly iconList = ['restaurant', 'garage', 'weekend', 'inventory_2'];
+  readonly accentList = ['accent-amber', 'accent-blue', 'accent-purple', 'accent-rose'];
 
   constructor() {
     this.loadInventories();
@@ -69,5 +72,13 @@ export class InventoryListComponent {
         this.notificationService.show('No se pudo eliminar el inventario.');
       }
     });
+  }
+
+  inventoryIcon(index: number): string {
+    return this.iconList[index % this.iconList.length];
+  }
+
+  inventoryAccent(index: number): string {
+    return this.accentList[index % this.accentList.length];
   }
 }
