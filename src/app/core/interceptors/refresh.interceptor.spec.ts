@@ -24,7 +24,7 @@ describe('refreshInterceptor', () => {
 
     sessionStore.setSession({
       user: { id: '1', name: 'User', email: 'test@example.com' },
-      tokens: { accessToken: 'expired', expiresIn: 3600 }
+      tokens: { accessToken: 'expired', refreshToken: 'refresh', expiresIn: 3600 }
     });
 
     http.get(`${environment.apiBaseUrl}/inventories`).subscribe();
@@ -34,7 +34,7 @@ describe('refreshInterceptor', () => {
 
     const refreshReq = httpMock.expectOne(`${environment.apiBaseUrl}/auth/refresh`);
     expect(refreshReq.request.method).toBe('POST');
-    refreshReq.flush({ data: { accessToken: 'new-token', expiresIn: 3600 } });
+    refreshReq.flush({ data: { access: 'new-token', refresh: 'new-refresh' } });
 
     const retryReq = httpMock.expectOne(`${environment.apiBaseUrl}/inventories`);
     retryReq.flush({ data: [] });

@@ -9,9 +9,7 @@ const isUnauthorized = (error: unknown): error is HttpErrorResponse =>
 
 const isRefreshRequest = (req: HttpRequest<unknown>): boolean => req.url.includes('/auth/refresh');
 
-let refreshToken$:
-  | ReturnType<AuthService['refresh']>
-  | null = null;
+let refreshToken$: ReturnType<AuthService['refresh']> | null = null;
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -36,7 +34,10 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
         switchMap((tokens) => {
           const current = sessionStore.session();
           if (current) {
-            sessionStore.setSession({ ...current, tokens });
+            sessionStore.setSession({
+              ...current,
+              tokens
+            });
           }
           const refreshedReq = req.clone({
             setHeaders: {

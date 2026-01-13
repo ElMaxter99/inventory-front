@@ -23,7 +23,8 @@ describe('AuthService', () => {
     req.flush({
       data: {
         user: { id: '1', name: 'User', email: 'test@example.com' },
-        tokens: { accessToken: 'token', expiresIn: 3600 }
+        access: 'access-token',
+        refresh: 'refresh-token'
       }
     });
 

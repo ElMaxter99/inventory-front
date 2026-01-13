@@ -2,7 +2,8 @@ import { User } from './inventory.models';
 
 export interface AuthTokens {
   accessToken: string;
-  expiresIn: number;
+  refreshToken?: string;
+  expiresIn?: number;
 }
 
 export interface AuthSession {

@@ -12,6 +12,17 @@ interface AuthPayload {
   name?: string;
 }
 
+interface LoginResponse {
+  user: AuthSession['user'];
+  access: string;
+  refresh: string;
+}
+
+interface RefreshResponse {
+  access: string;
+  refresh: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
@@ -20,11 +31,19 @@ export class AuthService {
 
   login(payload: AuthPayload): Observable<AuthSession> {
     return this.http
-      .post<ApiResponse<AuthSession>>(`${this.baseUrl}/login`, payload, {
+      .post<ApiResponse<LoginResponse>>(`${this.baseUrl}/login`, payload, {
         withCredentials: true
       })
       .pipe(
         map((response) => response.data),
+        map((data) => ({
+          user: data.user,
+          tokens: {
+            accessToken: data.access,
+            refreshToken: data.refresh,
+            expiresIn: 0
+          }
+        })),
         tap((session) => this.sessionStore.setSession(session))
       );
   }
@@ -39,8 +58,15 @@ export class AuthService {
 
   refresh(): Observable<AuthTokens> {
     return this.http
-      .post<ApiResponse<AuthTokens>>(`${this.baseUrl}/refresh`, {}, { withCredentials: true })
-      .pipe(map((response) => response.data));
+      .post<ApiResponse<RefreshResponse>>(`${this.baseUrl}/refresh`, {}, { withCredentials: true })
+      .pipe(
+        map((response) => response.data),
+        map((data) => ({
+          accessToken: data.access,
+          refreshToken: data.refresh,
+          expiresIn: 0
+        }))
+      );
   }
 
   logout(): Observable<void> {
