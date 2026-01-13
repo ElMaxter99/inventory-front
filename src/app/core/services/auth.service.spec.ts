@@ -30,4 +30,31 @@ describe('AuthService', () => {
     expect(sessionStore.isAuthenticated()).toBeTrue();
     httpMock.verify();
   });
+
+  it('should register without setting session', () => {
+    TestBed.configureTestingModule({
+      providers: [AuthService, SessionStore, provideHttpClient(), provideHttpClientTesting()]
+    });
+
+    const service = TestBed.inject(AuthService);
+    const httpMock = TestBed.inject(HttpTestingController);
+    const sessionStore = TestBed.inject(SessionStore);
+
+    service.register({ email: 'test@example.com', password: 'secret', name: 'User' }).subscribe();
+
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/auth/register`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush({
+      data: {
+        id: '1',
+        email: 'test@example.com',
+        name: 'User'
+      },
+      error: null
+    });
+
+    expect(sessionStore.isAuthenticated()).toBeFalse();
+    httpMock.verify();
+  });
 });

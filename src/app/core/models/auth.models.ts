@@ -9,3 +9,9 @@ export interface AuthSession {
   user: User;
   tokens: AuthTokens;
 }
+
+export interface RegisterResponse {
+  id: string;
+  email: string;
+  name: string;
+}

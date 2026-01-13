@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api.models';
-import { AuthSession, AuthTokens } from '../models/auth.models';
+import { AuthSession, AuthTokens, RegisterResponse } from '../models/auth.models';
 import { SessionStore } from '../stores/session.store';
 
 interface AuthPayload {
@@ -29,15 +29,12 @@ export class AuthService {
       );
   }
 
-  register(payload: AuthPayload): Observable<AuthSession> {
+  register(payload: AuthPayload): Observable<RegisterResponse> {
     return this.http
-      .post<ApiResponse<AuthSession>>(`${this.baseUrl}/register`, payload, {
+      .post<ApiResponse<RegisterResponse>>(`${this.baseUrl}/register`, payload, {
         withCredentials: true
       })
-      .pipe(
-        map((response) => response.data),
-        tap((session) => this.sessionStore.setSession(session))
-      );
+      .pipe(map((response) => response.data));
   }
 
   refresh(): Observable<AuthTokens> {

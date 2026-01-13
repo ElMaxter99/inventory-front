@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -82,6 +83,7 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly notificationService = inject(NotificationService);
 
   loading = false;
 
@@ -98,7 +100,10 @@ export class RegisterComponent {
 
     this.loading = true;
     this.authService.register(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigate(['/app/inventories']),
+      next: () => {
+        this.notificationService.show('Registro exitoso. Inicia sesión para continuar.');
+        this.router.navigate(['/auth/login']);
+      },
       error: () => (this.loading = false),
       complete: () => (this.loading = false)
     });
