@@ -32,6 +32,11 @@ export const routes: Routes = [
       },
       {
         path: 'inventories/:inventoryId',
+        pathMatch: 'full',
+        redirectTo: 'inventories/:inventoryId/zones'
+      },
+      {
+        path: 'inventories/:inventoryId/zones',
         loadComponent: () =>
           import(
             './features/inventories/views/inventory-dashboard/inventory-dashboard.component'
@@ -58,11 +63,47 @@ export const routes: Routes = [
       {
         path: 'inventories/:inventoryId/members',
         loadComponent: () =>
-          import('./features/inventories/views/members/members.component').then(
-            (m) => m.MembersComponent
+          import(
+            './features/inventories/views/members/inventory-members-view.component'
+          ).then((m) => m.InventoryMembersViewComponent),
+        canActivate: [inventoryRoleGuard],
+        data: { minRole: 'admin' }
+      },
+      {
+        path: 'inventories/:inventoryId/settings',
+        loadComponent: () =>
+          import('./features/inventories/views/settings/inventory-settings.component').then(
+            (m) => m.InventorySettingsComponent
           ),
         canActivate: [inventoryRoleGuard],
         data: { minRole: 'admin' }
+      },
+      {
+        path: 'inventories/:inventoryId/stats',
+        loadComponent: () =>
+          import('./features/inventories/views/stats/inventory-stats.component').then(
+            (m) => m.InventoryStatsComponent
+          ),
+        canActivate: [inventoryRoleGuard],
+        data: { minRole: 'viewer' }
+      },
+      {
+        path: 'inventories/:inventoryId/activity',
+        loadComponent: () =>
+          import('./features/inventories/views/activity/inventory-activity.component').then(
+            (m) => m.InventoryActivityComponent
+          ),
+        canActivate: [inventoryRoleGuard],
+        data: { minRole: 'viewer' }
+      },
+      {
+        path: 'inventories/:inventoryId/profile',
+        loadComponent: () =>
+          import('./features/inventories/views/profile/inventory-profile.component').then(
+            (m) => m.InventoryProfileComponent
+          ),
+        canActivate: [inventoryRoleGuard],
+        data: { minRole: 'viewer' }
       },
       {
         path: 'inventories/:inventoryId/locators',

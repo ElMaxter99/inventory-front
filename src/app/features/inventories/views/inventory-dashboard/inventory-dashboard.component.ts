@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { InventoryService } from '../../../../core/services/inventory.service';
 import { ZoneService } from '../../../../core/services/zone.service';
@@ -13,6 +13,8 @@ import { LoadingStateComponent } from '../../../../shared/components/loading-sta
   imports: [
     CommonModule,
     MatIconModule,
+    RouterLink,
+    RouterLinkActive,
     LoadingStateComponent
   ],
   templateUrl: './inventory-dashboard.component.html',
@@ -24,13 +26,13 @@ export class InventoryDashboardComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  readonly inventoryId = this.route.snapshot.paramMap.get('inventoryId') ?? '';
   readonly store = inject(InventoryDetailStore);
   readonly zoneIconList = ['restaurant', 'garage', 'weekend', 'inventory_2'];
   readonly zoneAccentList = ['accent-amber', 'accent-blue', 'accent-purple', 'accent-rose'];
 
   constructor() {
-    const inventoryId = this.route.snapshot.paramMap.get('inventoryId') ?? '';
-    this.loadInventory(inventoryId);
+    this.loadInventory(this.inventoryId);
   }
 
   loadInventory(inventoryId: string): void {
@@ -50,13 +52,6 @@ export class InventoryDashboardComponent {
     const inventoryId = this.store.inventory()?.id;
     if (inventoryId) {
       this.router.navigate(['/app/inventories', inventoryId, 'zones', zoneId]);
-    }
-  }
-
-  goToMembers(): void {
-    const inventoryId = this.store.inventory()?.id;
-    if (inventoryId) {
-      this.router.navigate(['/app/inventories', inventoryId, 'members']);
     }
   }
 
