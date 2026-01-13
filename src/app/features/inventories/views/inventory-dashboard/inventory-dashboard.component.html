@@ -1,0 +1,112 @@
+<div class="dashboard-shell" [class.is-loading]="store.loading()">
+  <header class="top-app-bar">
+    <div class="top-row">
+      <div class="breadcrumb">
+        <button class="icon-button" type="button">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <div>
+          <p class="breadcrumb-label">Home &gt; {{ store.inventory()?.name || 'Casa' }}</p>
+          <h1 class="breadcrumb-title">{{ store.inventory()?.name || 'Casa' }}</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" type="button">
+          <mat-icon>qr_code_scanner</mat-icon>
+        </button>
+        <button class="avatar-button" type="button" (click)="goToMembers()">
+          <span class="avatar">JD</span>
+        </button>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" type="button">Zones</button>
+      <button class="tab" type="button">Members</button>
+      <button class="tab" type="button">Settings</button>
+    </nav>
+  </header>
+
+  <app-loading-state *ngIf="store.loading()"></app-loading-state>
+
+  <main class="dashboard-body" *ngIf="!store.loading()">
+    <section class="actions-bar">
+      <div class="action-group">
+        <button class="action" type="button">
+          <span class="action-icon">
+            <mat-icon>reorder</mat-icon>
+          </span>
+          <span class="action-label">Reorder</span>
+        </button>
+        <button class="action" type="button">
+          <span class="action-icon">
+            <mat-icon>auto_awesome</mat-icon>
+          </span>
+          <span class="action-label">AI Magic</span>
+        </button>
+      </div>
+      <div class="role-pill">
+        <span class="role-indicator"></span>
+        <span>{{ (store.inventory()?.role || 'Editor') | titlecase }} Role</span>
+      </div>
+    </section>
+
+    <section class="search-bar">
+      <mat-icon>search</mat-icon>
+      <input type="text" [placeholder]="'Search ' + store.zones().length + ' zones...'" aria-label="Buscar zonas" />
+      <mat-icon class="mic">mic</mat-icon>
+    </section>
+
+    <section class="zones-grid">
+      <button
+        class="zone-card"
+        *ngFor="let zone of store.zones(); let i = index"
+        type="button"
+        (click)="goToZone(zone.id)"
+      >
+        <div class="zone-card-top">
+          <span class="zone-icon" [ngClass]="zoneAccent(i)">
+            <mat-icon>{{ zoneIcon(i) }}</mat-icon>
+          </span>
+          <span class="zone-index">#{{ i + 1 | number: '2.0' }}</span>
+        </div>
+        <div class="zone-card-body">
+          <h3>{{ zone.name }}</h3>
+          <p>{{ zone.description || '0 items' }}</p>
+        </div>
+        <div class="zone-card-footer" *ngIf="i === 0">
+          <span class="avatar-stack">AL</span>
+          <span class="avatar-stack">RM</span>
+          <span class="avatar-stack highlight">+1</span>
+        </div>
+      </button>
+
+      <button class="zone-card add-card" type="button">
+        <mat-icon>add_circle</mat-icon>
+        <span>Add Zone</span>
+      </button>
+    </section>
+  </main>
+
+  <button class="fab" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <nav class="bottom-nav">
+    <div class="bottom-item active">
+      <mat-icon>home</mat-icon>
+      <span>Inventory</span>
+    </div>
+    <div class="bottom-item">
+      <mat-icon>analytics</mat-icon>
+      <span>Stats</span>
+    </div>
+    <div class="bottom-item">
+      <mat-icon>notifications</mat-icon>
+      <span>Activity</span>
+    </div>
+    <div class="bottom-item">
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </div>
+  </nav>
+</div>

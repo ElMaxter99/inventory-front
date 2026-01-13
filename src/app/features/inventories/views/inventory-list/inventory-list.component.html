@@ -1,0 +1,134 @@
+<div class="inventory-shell">
+  <header class="top-app-bar">
+    <div class="top-row">
+      <div class="breadcrumb">
+        <button class="icon-button" type="button">
+          <span class="material-symbols-outlined">arrow_back_ios_new</span>
+        </button>
+        <div>
+          <p class="breadcrumb-label">Home &gt; Inventories</p>
+          <h1 class="breadcrumb-title">Inventories</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" type="button">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+        </button>
+        <button class="avatar-button" type="button">
+          <span class="avatar">JD</span>
+        </button>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" type="button">Inventory</button>
+      <button class="tab" type="button">Members</button>
+      <button class="tab" type="button">Settings</button>
+    </nav>
+  </header>
+
+  <main class="inventory-body">
+    <section class="actions-bar">
+      <div class="action-group">
+        <button class="action" type="button" (click)="openCreateDialog()">
+          <span class="action-icon">
+            <span class="material-symbols-outlined">add</span>
+          </span>
+          <span class="action-label">New</span>
+        </button>
+        <button class="action" type="button">
+          <span class="action-icon">
+            <span class="material-symbols-outlined">auto_awesome</span>
+          </span>
+          <span class="action-label">AI Magic</span>
+        </button>
+      </div>
+      <div class="role-pill">
+        <span class="role-indicator"></span>
+        <span>Owner Role</span>
+      </div>
+    </section>
+
+    <section class="search-bar">
+      <span class="material-symbols-outlined">search</span>
+      <input
+        type="text"
+        [placeholder]="'Search ' + store.inventories().length + ' inventories...'"
+        aria-label="Buscar inventarios"
+      />
+      <span class="material-symbols-outlined mic">mic</span>
+    </section>
+
+    <app-loading-state *ngIf="store.loading()"></app-loading-state>
+
+    <div
+      class="message-card"
+      *ngIf="!store.loading() && store.inventories().length === 0 && !store.error()"
+    >
+      <span class="material-symbols-outlined">inventory_2</span>
+      <h3>Sin inventarios</h3>
+      <p>Crea tu primer inventario y comienza a organizar tus objetos.</p>
+    </div>
+
+    <div class="message-card error" *ngIf="store.error()">
+      <span class="material-symbols-outlined">error</span>
+      <h3>No pudimos cargar tus inventarios</h3>
+      <p>{{ store.error() }}</p>
+    </div>
+
+    <section class="inventory-grid" *ngIf="store.inventories().length">
+      <div
+        class="inventory-card"
+        role="button"
+        tabindex="0"
+        *ngFor="let inventory of store.inventories(); let i = index"
+        (click)="goToInventory(inventory.id)"
+      >
+        <div class="card-top">
+          <span class="card-icon" [class.alt]="i % 2 === 1">
+            <span class="material-symbols-outlined">inventory_2</span>
+          </span>
+          <button
+            class="card-action"
+            type="button"
+            (click)="$event.stopPropagation(); removeInventory(inventory.id)"
+          >
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <h3>{{ inventory.name }}</h3>
+          <p>{{ inventory.description || 'Sin descripción' }}</p>
+        </div>
+        <div class="card-footer">
+          <span class="tag">{{ inventory.role | titlecase }}</span>
+          <span class="tag" [class.active]="inventory.isPublic">
+            {{ inventory.isPublic ? 'Public' : 'Private' }}
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="fab" type="button" (click)="openCreateDialog()">
+    <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <nav class="bottom-nav">
+    <div class="bottom-item active">
+      <span class="material-symbols-outlined">home</span>
+      <span>Inventory</span>
+    </div>
+    <div class="bottom-item">
+      <span class="material-symbols-outlined">analytics</span>
+      <span>Stats</span>
+    </div>
+    <div class="bottom-item">
+      <span class="material-symbols-outlined">notifications</span>
+      <span>Activity</span>
+    </div>
+    <div class="bottom-item">
+      <span class="material-symbols-outlined">person</span>
+      <span>Profile</span>
+    </div>
+  </nav>
+</div>
