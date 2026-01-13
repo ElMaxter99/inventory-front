@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { ItemService } from '../../../../core/services/item.service';
 import { ImageUploaderComponent } from '../../../../shared/components/image-uploader/image-uploader.component';
-import { Item, ItemComment } from '../../../../core/models/inventory.models';
+import { Item, ItemAttribute, ItemComment } from '../../../../core/models/inventory.models';
 
 @Component({
   selector: 'app-item-detail',
@@ -172,15 +172,15 @@ export class ItemDetailComponent {
     name: ['', [Validators.required]],
     description: [''],
     quantity: [1, [Validators.required, Validators.min(1)]],
-    attributes: this.fb.array([])
+    attributes: this.fb.array<FormGroup<ItemAttribute>>([])
   });
 
   constructor() {
     this.loadItem();
   }
 
-  get attributes(): FormArray {
-    return this.form.get('attributes') as FormArray;
+  get attributes(): FormArray<FormGroup<ItemAttribute>> {
+    return this.form.get('attributes') as FormArray<FormGroup<ItemAttribute>>;
   }
 
   loadItem(): void {
@@ -196,7 +196,7 @@ export class ItemDetailComponent {
         });
         this.attributes.clear();
         item.attributes.forEach((attr) => {
-          this.attributes.push(this.fb.nonNullable.group({ key: [attr.key], value: [attr.value] }));
+        this.attributes.push(this.fb.nonNullable.group({ key: [attr.key], value: [attr.value] }));
         });
       });
 
@@ -215,7 +215,10 @@ export class ItemDetailComponent {
       return;
     }
     const payload = this.form.getRawValue();
-    this.itemService.update(this.inventoryId, this.itemId, payload).subscribe((item) => {
+    this.itemService.update(this.inventoryId, this.itemId, {
+      ...payload,
+      attributes: payload.attributes as ItemAttribute[]
+    }).subscribe((item) => {
       this.item.set(item);
     });
   }
