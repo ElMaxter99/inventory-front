@@ -1,59 +1,78 @@
-# InventoryFront
+# Inventario Hogar (Angular 20)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+Frontend Angular standalone para una app de inventario doméstico con API REST (Node/Express/Mongo).
 
-## Development server
-
-To start a local development server, run:
+## Setup
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Scripts
 
 ```bash
-ng generate component component-name
+npm run start
+npm run build
+npm run test
+npm run lint
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Environments
 
-```bash
-ng generate --help
+Configura las variables en `src/environments`:
+
+```ts
+export const environment = {
+  production: false,
+  apiBaseUrl: 'http://localhost:3000/api/v1',
+  uploadsBaseUrl: 'http://localhost:3000',
+  enablePublicEditWarnings: true,
+  appName: 'Inventario Hogar'
+};
 ```
 
-## Building
+La compilación `production` usa `environment.prod.ts`.
 
-To build the project run:
+## Apuntar a la API
 
-```bash
-ng build
+El cliente consume `{ apiBaseUrl }` para todas las rutas (auth, inventories, zones, items, locators). Para autenticación:
+
+- Access token en memoria (session store).
+- Refresh token vía `withCredentials: true` para soportar cookie httpOnly.
+
+Si tu API usa refresh tokens en storage, puedes extender `SessionStore` para persistirlos.
+
+## Flujo de permisos
+
+Los roles por inventario son: `owner`, `admin`, `editor`, `viewer`.
+
+- Owner/Admin: gestión total.
+- Editor: CRUD en zonas/items, comentarios.
+- Viewer: solo lectura.
+
+El `inventoryRoleGuard` puede usarse para bloquear rutas por rol mínimo.
+
+## Locators (QR/NFC) y `/public/:token`
+
+- Crea locators desde **Inventarios > Locators**.
+- Cada locator genera un link público y un QR en frontend (`qrcode`).
+- Accede con `/public/:token` para vista pública.
+- Si `publicEditEnabled` está activo, se muestra un banner de advertencia y se habilita el botón de edición.
+
+## Arquitectura
+
+```
+src/app/
+  core/         # servicios, guards, interceptors, stores
+  shared/       # componentes reutilizables
+  features/     # auth, inventories, public, shell
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Tests
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Incluye pruebas mínimas para:
+- `AuthService` y refresh interceptor.
+- `InventoryListComponent` (error UI).
+- `authGuard`.
+- `ItemService` upload.
