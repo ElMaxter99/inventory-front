@@ -1,0 +1,14 @@
+.public-wrapper {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.warning {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 152, 0, 0.1);
+  color: #f57c00;
+  font-weight: 600;
+}

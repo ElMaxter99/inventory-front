@@ -25,42 +25,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatListModule,
     MatSlideToggleModule,
   ],
-  template: ` <router-outlet></router-outlet> `,
-  styles: [
-    `
-      .shell {
-        min-height: 100vh;
-        background: var(--app-background);
-      }
-
-      .shell-sidenav {
-        width: 260px;
-        background: var(--app-surface);
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 1.5rem;
-        font-weight: 600;
-      }
-
-      .shell-content {
-        padding: 1.5rem;
-      }
-
-      .spacer {
-        flex: 1;
-      }
-
-      @media (max-width: 768px) {
-        .shell-content {
-          padding: 1rem;
-        }
-      }
-    `,
-  ],
+  templateUrl: './app-shell.component.html',
+  styleUrls: ['./app-shell.component.scss'],
 })
 export class AppShellComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);

@@ -1,0 +1,36 @@
+.item-detail {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.gallery {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.gallery img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.detail-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.attributes {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.comment {
+  margin-bottom: 0.75rem;
+}
+
+.comment-box {
+  width: 100%;
+}

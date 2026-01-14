@@ -24,48 +24,8 @@ import { LocatorListComponent } from '../../components/locator-list/locator-list
     MatSlideToggleModule,
     LocatorListComponent
   ],
-  template: `
-    <mat-card>
-      <mat-card-title>Locators (QR/NFC)</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="locatorForm" class="locator-form">
-          <mat-form-field appearance="outline">
-            <mat-label>Tipo</mat-label>
-            <mat-select formControlName="targetType">
-              <mat-option value="inventory">Inventario</mat-option>
-              <mat-option value="zone">Zona</mat-option>
-              <mat-option value="item">Item</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>ID destino</mat-label>
-            <input matInput formControlName="targetId" />
-          </mat-form-field>
-          <mat-slide-toggle formControlName="isPublic">Público</mat-slide-toggle>
-          <mat-slide-toggle formControlName="publicEditEnabled">Edición pública</mat-slide-toggle>
-          <button mat-flat-button color="primary" (click)="createLocator()" [disabled]="locatorForm.invalid">
-            Crear locator
-          </button>
-        </form>
-        <app-locator-list
-          [locators]="locators"
-          (copy)="copyLink($event)"
-          (remove)="deleteLocator($event)"
-        ></app-locator-list>
-      </mat-card-content>
-    </mat-card>
-  `,
-  styles: [
-    `
-      .locator-form {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-    `
-  ]
+  templateUrl: './locators.component.html',
+  styleUrls: ['./locators.component.scss']
 })
 export class LocatorsComponent {
   private readonly locatorService = inject(LocatorService);

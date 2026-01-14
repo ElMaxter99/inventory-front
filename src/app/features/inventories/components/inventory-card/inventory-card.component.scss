@@ -1,0 +1,18 @@
+.inventory-card {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(63, 81, 181, 0.1);
+  color: var(--app-primary);
+  font-weight: 600;
+}
+
+.badge.public {
+  background: rgba(0, 150, 136, 0.1);
+  color: #009688;
+}

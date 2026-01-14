@@ -1,0 +1,21 @@
+<mat-card class="item-card">
+  <div class="thumbnail">
+    <img *ngIf="item?.photos?.length" [src]="item?.photos?.[0]" [alt]="item?.name" />
+    <mat-icon *ngIf="!item?.photos?.length">inventory_2</mat-icon>
+  </div>
+  <div class="details">
+    <div class="title">
+      <span>{{ item?.name }}</span>
+      <span class="count">x{{ item?.quantity }}</span>
+    </div>
+    <app-tag-chips [tags]="item?.tags ?? []"></app-tag-chips>
+  </div>
+  <div class="actions">
+    <button mat-icon-button (click)="open.emit()" aria-label="Ver detalle">
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="remove.emit()" aria-label="Eliminar">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>

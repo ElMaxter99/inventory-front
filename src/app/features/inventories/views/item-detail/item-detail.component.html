@@ -1,0 +1,80 @@
+<section class="item-detail" *ngIf="item() as current">
+  <mat-card>
+    <mat-card-title>{{ current.name }}</mat-card-title>
+    <mat-card-content>
+      <div class="gallery">
+        <img *ngFor="let photo of current.photos" [src]="photo" [alt]="current.name" />
+      </div>
+      <app-image-uploader (fileSelected)="uploadPhoto($event)"></app-image-uploader>
+    </mat-card-content>
+  </mat-card>
+
+  <form [formGroup]="form" class="detail-form">
+    <mat-card>
+      <mat-card-title>Detalles</mat-card-title>
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput rows="3" formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="quantity" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Atributos</mat-card-title>
+      <mat-card-content>
+        <div formArrayName="attributes" class="attributes">
+          <div *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
+            <mat-form-field appearance="outline">
+              <mat-label>Clave</mat-label>
+              <input matInput formControlName="key" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Valor</mat-label>
+              <input matInput formControlName="value" />
+            </mat-form-field>
+          </div>
+        </div>
+        <button mat-stroked-button type="button" (click)="addAttribute()">
+          Añadir atributo
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <button mat-flat-button color="primary" type="button" (click)="save()">
+      Guardar cambios
+    </button>
+  </form>
+
+  <mat-card>
+    <mat-card-title>Comentarios</mat-card-title>
+    <mat-card-content>
+      <div class="comment" *ngFor="let comment of comments()">
+        <strong>{{ comment.author.name }}</strong>
+        <p>{{ comment.message }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-form-field appearance="outline" class="comment-box">
+        <mat-label>Nuevo comentario</mat-label>
+        <textarea matInput rows="2" [(ngModel)]="newComment"></textarea>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="addComment()">Enviar</button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>IA sugerir</mat-card-title>
+    <mat-card-content>
+      <p>{{ suggestion() || 'Sin sugerencias aún' }}</p>
+      <button mat-stroked-button (click)="requestSuggestion()">Solicitar</button>
+    </mat-card-content>
+  </mat-card>
+</section>

@@ -10,38 +10,8 @@ import { toDataURL } from 'qrcode';
   selector: 'app-locator-list',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
-  template: `
-    <div class="locator-grid">
-      <mat-card *ngFor="let locator of locators" class="locator-card">
-        <mat-card-title>{{ locator.targetType | titlecase }}</mat-card-title>
-        <mat-card-content>
-          <p>{{ maskToken(locator.token) }}</p>
-          <img *ngIf="qrCodes[locator.id]" [src]="qrCodes[locator.id]" alt="QR" />
-          <p>{{ publicUrl(locator.token) }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button (click)="copy.emit(publicUrl(locator.token))">Copiar link</button>
-          <button mat-icon-button color="warn" (click)="remove.emit(locator)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  `,
-  styles: [
-    `
-      .locator-grid {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      }
-
-      .locator-card img {
-        width: 120px;
-        height: 120px;
-      }
-    `
-  ]
+  templateUrl: './locator-list.component.html',
+  styleUrls: ['./locator-list.component.scss']
 })
 export class LocatorListComponent implements OnChanges {
   @Input() locators: Locator[] = [];

@@ -1,0 +1,10 @@
+.locator-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.locator-card img {
+  width: 120px;
+  height: 120px;
+}

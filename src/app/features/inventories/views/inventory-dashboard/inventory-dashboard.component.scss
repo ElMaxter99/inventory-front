@@ -108,6 +108,8 @@
   font-weight: 600;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  text-decoration: none;
+  text-align: center;
 }
 
 .tab.active {
@@ -367,6 +369,7 @@
   font-size: 10px;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 600;
+  text-decoration: none;
 }
 
 .bottom-item.active {

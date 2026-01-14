@@ -14,15 +14,37 @@
         <button class="icon-button" type="button">
           <mat-icon>qr_code_scanner</mat-icon>
         </button>
-        <button class="avatar-button" type="button" (click)="goToMembers()">
+        <a
+          class="avatar-button"
+          [routerLink]="['/app/inventories', inventoryId, 'members']"
+          routerLinkActive="active"
+        >
           <span class="avatar">JD</span>
-        </button>
+        </a>
       </div>
     </div>
     <nav class="tabs">
-      <button class="tab active" type="button">Zones</button>
-      <button class="tab" type="button">Members</button>
-      <button class="tab" type="button">Settings</button>
+      <a
+        class="tab"
+        [routerLink]="['/app/inventories', inventoryId, 'zones']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Zones</a
+      >
+      <a
+        class="tab"
+        [routerLink]="['/app/inventories', inventoryId, 'members']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Members</a
+      >
+      <a
+        class="tab"
+        [routerLink]="['/app/inventories', inventoryId, 'settings']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Settings</a
+      >
     </nav>
   </header>
 
@@ -92,21 +114,41 @@
   </button>
 
   <nav class="bottom-nav">
-    <div class="bottom-item active">
+    <a
+      class="bottom-item"
+      [routerLink]="['/app/inventories', inventoryId, 'zones']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <mat-icon>home</mat-icon>
       <span>Inventory</span>
-    </div>
-    <div class="bottom-item">
+    </a>
+    <a
+      class="bottom-item"
+      [routerLink]="['/app/inventories', inventoryId, 'stats']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <mat-icon>analytics</mat-icon>
       <span>Stats</span>
-    </div>
-    <div class="bottom-item">
+    </a>
+    <a
+      class="bottom-item"
+      [routerLink]="['/app/inventories', inventoryId, 'activity']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <mat-icon>notifications</mat-icon>
       <span>Activity</span>
-    </div>
-    <div class="bottom-item">
+    </a>
+    <a
+      class="bottom-item"
+      [routerLink]="['/app/inventories', inventoryId, 'profile']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <mat-icon>person</mat-icon>
       <span>Profile</span>
-    </div>
+    </a>
   </nav>
 </div>
