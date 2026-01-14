@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';
 import { InventoryService } from '../../../../core/services/inventory.service';
@@ -7,6 +7,8 @@ import { InventoriesStore } from '../../../../core/stores/inventories.store';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { LoadingStateComponent } from '../../../../shared/components/loading-state/loading-state.component';
 import { InventoryCreateDialogComponent } from './inventory-create-dialog.component';
+import { ZoneService } from '../../../../core/services/zone.service';
+import { UserZone } from '../../../../core/models/inventory.models';
 
 @Component({
   selector: 'app-inventory-list',
@@ -22,6 +24,7 @@ import { InventoryCreateDialogComponent } from './inventory-create-dialog.compon
 })
 export class InventoryListComponent {
   private readonly inventoryService = inject(InventoryService);
+  private readonly zoneService = inject(ZoneService);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly notificationService = inject(NotificationService);
@@ -29,9 +32,13 @@ export class InventoryListComponent {
   readonly store = inject(InventoriesStore);
   readonly iconList = ['restaurant', 'garage', 'weekend', 'inventory_2'];
   readonly accentList = ['accent-amber', 'accent-blue', 'accent-purple', 'accent-rose'];
+  readonly userZones = signal<UserZone[]>([]);
+  readonly userZonesLoading = signal(false);
+  readonly userZonesError = signal<string | null>(null);
 
   constructor() {
     this.loadInventories();
+    this.loadUserZones();
   }
 
   loadInventories(): void {
@@ -62,6 +69,10 @@ export class InventoryListComponent {
     this.router.navigate(['/app/inventories', inventoryId]);
   }
 
+  goToUserZone(zone: UserZone): void {
+    this.router.navigate(['/app/inventories', zone.inventory.id, 'zones', zone.id]);
+  }
+
   removeInventory(inventoryId: string): void {
     const previous = this.store.inventories();
     this.store.setInventories(this.store.inventories().filter((inv) => inv.id !== inventoryId));
@@ -80,5 +91,25 @@ export class InventoryListComponent {
 
   inventoryAccent(index: number): string {
     return this.accentList[index % this.accentList.length];
+  }
+
+  loadUserZones(): void {
+    this.userZonesLoading.set(true);
+    this.userZonesError.set(null);
+    this.zoneService.listUserZones().subscribe({
+      next: (zones) => this.userZones.set(zones),
+      error: (error) => {
+        this.userZonesError.set(error.message ?? 'Error al cargar zonas');
+        this.userZonesLoading.set(false);
+      },
+      complete: () => this.userZonesLoading.set(false)
+    });
+  }
+
+  userZoneVisibility(zone: UserZone): string {
+    if (zone.inventory.publicAccess.enabled) {
+      return 'Pública';
+    }
+    return zone.inventory.visibility === 'public' ? 'Pública' : 'Privada';
   }
 }

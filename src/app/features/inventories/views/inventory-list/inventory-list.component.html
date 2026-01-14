@@ -83,6 +83,59 @@
       <span class="material-symbols-outlined mic">mic</span>
     </section>
 
+    <section class="user-zones-section">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Mis zonas</p>
+          <h2>Accesos rápidos por inventario</h2>
+        </div>
+        <span class="section-count">{{ userZones().length | number: '2.0' }}</span>
+      </div>
+
+      <app-loading-state *ngIf="userZonesLoading()"></app-loading-state>
+
+      <div
+        class="message-card"
+        *ngIf="!userZonesLoading() && userZones().length === 0 && !userZonesError()"
+      >
+        <span class="material-symbols-outlined">location_on</span>
+        <h3>Sin zonas vinculadas</h3>
+        <p>Cuando participes en un inventario verás aquí todas tus zonas.</p>
+      </div>
+
+      <div class="message-card error" *ngIf="userZonesError()">
+        <span class="material-symbols-outlined">error</span>
+        <h3>No pudimos cargar tus zonas</h3>
+        <p>{{ userZonesError() }}</p>
+      </div>
+
+      <div class="user-zones-grid" *ngIf="userZones().length">
+        <button
+          class="inventory-card zone-card"
+          *ngFor="let zone of userZones(); let i = index"
+          type="button"
+          (click)="goToUserZone(zone)"
+        >
+          <div class="card-top">
+            <span class="card-icon" [ngClass]="inventoryAccent(i)">
+              <span class="material-symbols-outlined">{{ inventoryIcon(i) }}</span>
+            </span>
+            <span class="card-index">{{ userZoneVisibility(zone) }}</span>
+          </div>
+          <div class="card-body">
+            <h3>{{ zone.name }}</h3>
+            <p>{{ zone.inventory.name }}</p>
+          </div>
+          <div class="zone-meta">
+            <span class="meta-pill">{{ zone.inventory.role | titlecase }}</span>
+            <span class="meta-pill" [class.active]="zone.inventory.publicAccess.enabled">
+              {{ zone.inventory.publicAccess.enabled ? 'Acceso público' : 'Solo invitados' }}
+            </span>
+          </div>
+        </button>
+      </div>
+    </section>
+
     <app-loading-state *ngIf="store.loading()"></app-loading-state>
 
     <div

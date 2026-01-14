@@ -23,6 +23,24 @@ export interface Zone {
   order: number;
 }
 
+export interface ZoneInventoryAccess {
+  enabled: boolean;
+  allowPublicEdit: boolean;
+}
+
+export interface ZoneInventorySummary {
+  id: string;
+  name: string;
+  visibility: 'private' | 'public';
+  role: InventoryRole;
+  description?: string;
+  publicAccess: ZoneInventoryAccess;
+}
+
+export interface UserZone extends Zone {
+  inventory: ZoneInventorySummary;
+}
+
 export interface ItemAttribute {
   key: string;
   value: string;

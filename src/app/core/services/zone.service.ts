@@ -3,17 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api.models';
-import { Zone } from '../models/inventory.models';
+import { UserZone, Zone } from '../models/inventory.models';
 
 @Injectable({ providedIn: 'root' })
 export class ZoneService {
   private readonly baseUrl = `${environment.apiBaseUrl}/inventories`;
+  private readonly zonesUrl = `${environment.apiBaseUrl}/zones`;
 
   constructor(private readonly http: HttpClient) {}
 
   list(inventoryId: string): Observable<Zone[]> {
     return this.http
       .get<ApiResponse<Zone[]>>(`${this.baseUrl}/${inventoryId}/zones`)
+      .pipe(map((response) => response.data));
+  }
+
+  listUserZones(): Observable<UserZone[]> {
+    return this.http
+      .get<ApiResponse<UserZone[]>>(`${this.zonesUrl}/me`)
       .pipe(map((response) => response.data));
   }
 
